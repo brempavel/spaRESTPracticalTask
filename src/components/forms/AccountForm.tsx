@@ -1,8 +1,8 @@
 import { useHistory } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { login } from '../reducers/userReducer';
-import { FormValues } from '../interfaces/FormValues';
-import { localStorageKey } from '../constatnts/common';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { login } from '../../reducers/userReducer';
+import { FormValues } from '../../interfaces/FormValues';
+import { localStorageKey } from '../../constatnts/common';
 import CustomForm from './CustomForm';
 
 const AccountForm = () => {
@@ -12,7 +12,7 @@ const AccountForm = () => {
 
 	const onSubmit = ({ name }: FormValues) => {
 		localStorage.removeItem(localStorageKey);
-		localStorage.setItem(localStorageKey, JSON.stringify(name));
+		localStorage.setItem(localStorageKey, name);
 		dispatch(login(name));
 		history.push('/main');
 	};

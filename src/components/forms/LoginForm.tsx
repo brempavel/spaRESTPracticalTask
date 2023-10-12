@@ -1,14 +1,14 @@
-import { useAppDispatch } from '../hooks/hooks';
-import { login } from '../reducers/userReducer';
-import { FormValues } from '../interfaces/FormValues';
-import { localStorageKey } from '../constatnts/common';
+import { useAppDispatch } from '../../hooks/hooks';
+import { login } from '../../reducers/userReducer';
+import { FormValues } from '../../interfaces/FormValues';
+import { localStorageKey } from '../../constatnts/common';
 import CustomForm from './CustomForm';
 
 const LoginForm = () => {
 	const dispatch = useAppDispatch();
 
 	const onSubmit = ({ name }: FormValues) => {
-		localStorage.setItem(localStorageKey, JSON.stringify(name));
+		localStorage.setItem(localStorageKey, name);
 		dispatch(login(name));
 	};
 
