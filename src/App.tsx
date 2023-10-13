@@ -23,13 +23,13 @@ const App = () => {
 
 	return (
 		<>
-			<Center borderBottom="2px solid black">
-				<Heading as="h1" size="xl">
+			<Center borderBottom="1px solid black">
+				<Heading as="h1" size="xl" mt=".5rem">
 					Welcome to SPA: REST practical task
 				</Heading>
 			</Center>
 			<Center>
-				<Box margin="10px">
+				<Box w="100%" m=".5rem">
 					{isUserLoggedIn ? (
 						<>
 							<Redirect to="/main" />
