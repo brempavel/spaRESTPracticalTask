@@ -7,6 +7,7 @@ import {
 	FormErrorMessage,
 	FormLabel,
 	Input,
+	Box,
 } from '@chakra-ui/react';
 
 interface CustomFormProps {
@@ -51,21 +52,23 @@ const CustomForm = ({
 	const isError = !!errorMessage;
 
 	return (
-		<FormControl isRequired={validationRules?.required} isInvalid={isError}>
-			<form onSubmit={handleSubmit(onSubmit)}>
-				<FormLabel>{label}</FormLabel>
-				<Flex alignItems="center">
-					<Input
-						defaultValue={inputValue ? inputValue : ''}
-						{...register('name', validationRules)}
-					/>
-					<Button colorScheme="blue" type="submit" margin="0 0 0 10px">
-						{buttonText}
-					</Button>
-				</Flex>
-				{isError && <FormErrorMessage>{errorMessage}</FormErrorMessage>}
-			</form>
-		</FormControl>
+		<Box mx="25vw">
+			<FormControl isRequired={validationRules?.required} isInvalid={isError}>
+				<form onSubmit={handleSubmit(onSubmit)}>
+					<FormLabel>{label}</FormLabel>
+					<Flex alignItems="center">
+						<Input
+							defaultValue={inputValue ? inputValue : ''}
+							{...register('name', validationRules)}
+						/>
+						<Button colorScheme="blue" type="submit" margin="0 0 0 10px">
+							{buttonText}
+						</Button>
+					</Flex>
+					{isError && <FormErrorMessage>{errorMessage}</FormErrorMessage>}
+				</form>
+			</FormControl>
+		</Box>
 	);
 };
 
