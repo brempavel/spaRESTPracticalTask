@@ -1,4 +1,4 @@
-export interface CharacterValues {
+export interface ApiCharacterValues {
 	id: number;
 	name: string;
 	status: string;
@@ -18,3 +18,5 @@ export interface CharacterValues {
 	url: string;
 	created: string;
 }
+
+export type CharacterValues = Pick<ApiCharacterValues, 'name' | 'image' | 'id'>;
