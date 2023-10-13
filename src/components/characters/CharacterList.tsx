@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { SimpleGrid } from '@chakra-ui/react';
 import {
 	ApiCharacterValues,
@@ -6,14 +6,17 @@ import {
 } from '../../interfaces/CharacterValues';
 import Character from './Character';
 
-const scrollOffsetInPx = 10;
-
 interface CharacterListProps {
 	characters: ApiCharacterValues[];
 	onBottomReached: () => void;
 }
 
+const scrollOffsetInPx = 10;
+
 const CharacterList = ({ characters, onBottomReached }: CharacterListProps) => {
+	const [isBottomReached, setIsBottomReached] = useState<boolean>(false);
+	useEffect(() => setIsBottomReached(false), [characters]);
+
 	const isAtBottom = () => {
 		const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
 		const scrollPosition = scrollTop + scrollOffsetInPx;
@@ -25,6 +28,7 @@ const CharacterList = ({ characters, onBottomReached }: CharacterListProps) => {
 		const handleScroll = () => {
 			if (isAtBottom()) {
 				onBottomReached();
+				setIsBottomReached(true);
 			}
 		};
 
@@ -41,7 +45,11 @@ const CharacterList = ({ characters, onBottomReached }: CharacterListProps) => {
 	}, [onBottomReached]);
 
 	return (
-		<SimpleGrid minChildWidth="9rem" spacing="2">
+		<SimpleGrid
+			minChildWidth="9rem"
+			spacing="2"
+			mb={isBottomReached ? `${scrollOffsetInPx * 2}px` : 0}
+		>
 			{characters.map((character: CharacterValues) => (
 				<Character key={character.id} character={character} />
 			))}
