@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, useEffect, ChangeEvent, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getCharacters } from '../services/rickAndMortyService';
@@ -75,14 +75,14 @@ const Main = () => {
 		1000
 	);
 
-	const onBottomReached = () => {
+	const onBottomReached = useCallback(() => {
 		setPage((previousPage) => {
 			if (previousPage === pages) {
 				return previousPage;
 			}
 			return previousPage + 1;
 		});
-	};
+	}, [setPage, pages]);
 
 	return (
 		<>

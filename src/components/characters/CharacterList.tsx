@@ -32,14 +32,13 @@ const CharacterList = ({ characters, onBottomReached }: CharacterListProps) => {
 		return () => window.removeEventListener('scroll', handleScroll);
 	}, [onBottomReached]);
 
-	// TODO: align the implementation
-	// useEffect(() => {
-	// 	const { scrollHeight, clientHeight } = document.documentElement;
-	// 	console.log(scrollHeight, clientHeight);
-	// 	if (scrollHeight === clientHeight) {
-	// 		onBottomReached(); // should be called on first render if scroll is not available
-	// 	}
-	// }, [onBottomReached]);
+	useEffect(() => {
+		const { scrollHeight, clientHeight } = document.documentElement;
+		console.log(scrollHeight, clientHeight);
+		if (scrollHeight === clientHeight) {
+			onBottomReached();
+		}
+	}, [onBottomReached]);
 
 	return (
 		<SimpleGrid minChildWidth="9rem" spacing="2">
