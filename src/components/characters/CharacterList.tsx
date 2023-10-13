@@ -1,16 +1,19 @@
 import { useEffect } from 'react';
 import { SimpleGrid } from '@chakra-ui/react';
-import { CharacterValues } from '../../interfaces/CharacterValues';
+import {
+	ApiCharacterValues,
+	CharacterValues,
+} from '../../interfaces/CharacterValues';
 import Character from './Character';
 
 const scrollOffsetInPx = 10;
 
 interface CharacterListProps {
-	characters: CharacterValues[];
-	setPage: (setter: (page: number) => number) => void;
+	characters: ApiCharacterValues[];
+	onBottomReached: () => void;
 }
 
-const CharacterList = ({ characters, setPage }: CharacterListProps) => {
+const CharacterList = ({ characters, onBottomReached }: CharacterListProps) => {
 	const isAtBottom = () => {
 		const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
 		const scrollPosition = scrollTop + scrollOffsetInPx;
@@ -21,16 +24,25 @@ const CharacterList = ({ characters, setPage }: CharacterListProps) => {
 	useEffect(() => {
 		const handleScroll = () => {
 			if (isAtBottom()) {
-				setPage((previousPage) => previousPage + 1);
+				onBottomReached();
 			}
 		};
 
 		window.addEventListener('scroll', handleScroll);
 		return () => window.removeEventListener('scroll', handleScroll);
-	}, [setPage]);
+	}, [onBottomReached]);
+
+	// TODO: align the implementation
+	// useEffect(() => {
+	// 	const { scrollHeight, clientHeight } = document.documentElement;
+	// 	console.log(scrollHeight, clientHeight);
+	// 	if (scrollHeight === clientHeight) {
+	// 		onBottomReached(); // should be called on first render if scroll is not available
+	// 	}
+	// }, [onBottomReached]);
 
 	return (
-		<SimpleGrid columns={4} spacing={1}>
+		<SimpleGrid minChildWidth="9rem" spacing="2">
 			{characters.map((character: CharacterValues) => (
 				<Character key={character.id} character={character} />
 			))}
