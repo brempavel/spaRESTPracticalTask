@@ -1,15 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
+import { createPortal } from 'react-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getCharacters } from '../services/rickAndMortyService';
 import Header from './Header';
 import CharacterList from './characters/CharacterList';
-import { CharacterValues } from '../interfaces/CharacterValues';
+import { ApiCharacterValues } from '../interfaces/CharacterValues';
 import { charactersQueryKey } from '../constatnts/common';
 import CustomSpinner from './CustomSpinner';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { finish, start } from '../reducers/loadingReducer';
-import SearchForm from './forms/SearchForm';
-import { SearchFormValues } from '../interfaces/SearchFormValues';
+import SearchForm from './SearchBar';
+import CustomModal from './CustomModal';
+import { ApiError } from '../enums/error';
+import { debounce } from '../utils/common';
 
 const Main = () => {
 	const dispatch = useAppDispatch();
