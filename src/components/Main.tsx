@@ -18,18 +18,44 @@ const Main = () => {
 	const dispatch = useAppDispatch();
 	const { isLoading } = useAppSelector(({ loading }) => loading);
 	const [page, setPage] = useState<number>(1);
+	const [pages, setPages] = useState<number>(1);
 	const [query, setQuery] = useState<string>('');
-	const [characters, setCharacters] = useState<CharacterValues[]>([]);
+	const [characters, setCharacters] = useState<ApiCharacterValues[]>([]);
+	const [charactersCount, setCharactersCount] = useState<number>(0);
+	const [error, setError] = useState<ApiError>();
+	const [onSearchResultModalOpen, setOnSearchResultModalOpen] =
+		useState<() => void>();
 
 	const { isSuccess } = useQuery({
 		queryKey: [charactersQueryKey, { page, query }],
 		queryFn: () => getCharacters(page, query),
 		refetchOnWindowFocus: false,
+		retry: false,
 		onSuccess: (data) => {
+			if (data.error) {
+				switch (data.error) {
+					case ApiError.NotFound:
+						setError(ApiError.NotFound);
+						break;
+					default:
+						throw new Error('Unexpected error');
+				}
+				dispatch(finish());
+				return;
+			}
 			setCharacters((previousCharacters) => [
 				...previousCharacters,
-				...data.results,
+				...data.results.map(({ name, image, id }: ApiCharacterValues) => ({
+					name,
+					image,
+					id,
+				})),
 			]);
+			setPages(data.info.pages);
+			setCharactersCount(data.info.count);
+			if (query && page === 1) {
+				onSearchResultModalOpen?.();
+			}
 			dispatch(finish());
 		},
 	});
@@ -40,17 +66,41 @@ const Main = () => {
 		}
 	}, [dispatch, isSuccess, isLoading]);
 
-	const onSubmit = async ({ query }: SearchFormValues) => {
-		setCharacters([]);
-		setQuery(query);
+	const onQueryChange = debounce(
+		async (event: ChangeEvent<HTMLInputElement>) => {
+			setPage(1);
+			setCharacters([]);
+			setQuery(event.target.value);
+		},
+		1000
+	);
+
+	const onBottomReached = () => {
+		setPage((previousPage) => {
+			if (previousPage === pages) {
+				return previousPage;
+			}
+			return previousPage + 1;
+		});
 	};
 
 	return (
 		<>
 			<Header />
-			<SearchForm onSubmit={onSubmit} />
-			<CharacterList characters={characters} setPage={setPage} />
+			<SearchForm onChange={onQueryChange} />
+			<CharacterList
+				characters={characters}
+				onBottomReached={onBottomReached}
+			/>
 			{isLoading && <CustomSpinner />}
+			{createPortal(
+				<CustomModal
+					charactersCount={charactersCount}
+					setOnOpen={setOnSearchResultModalOpen}
+				/>,
+				document.body
+			)}
+			{error === ApiError.NotFound && 'Nothing found'}
 		</>
 	);
 };
