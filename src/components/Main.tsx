@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { finish, start } from '../reducers/loadingReducer';
 import SearchBar from './SearchBar';
 import CustomModal from './CustomModal';
+import CustomRadio from './CustomRadio';
 import { ApiError } from '../enums/error';
 import { debounce } from '../utils/common';
 
@@ -25,10 +26,11 @@ const Main = () => {
 	const [error, setError] = useState<ApiError | null>(null);
 	const [onSearchResultModalOpen, setOnSearchResultModalOpen] =
 		useState<() => void>();
+	const [gender, setGender] = useState<string>('');
 
 	const { isSuccess } = useQuery({
-		queryKey: [charactersQueryKey, { page, query }],
-		queryFn: () => getCharacters(page, query),
+		queryKey: [charactersQueryKey, { page, query, gender }],
+		queryFn: () => getCharacters(page, query, gender),
 		refetchOnWindowFocus: false,
 		retry: false,
 		onSuccess: (data) => {
@@ -76,6 +78,12 @@ const Main = () => {
 		1000
 	);
 
+	const onGenderChange = (gender: string) => {
+		setPage(1);
+		setCharacters([]);
+		setGender(gender);
+	};
+
 	const onBottomReached = useCallback(() => {
 		setPage((previousPage) => {
 			if (previousPage === pages) {
@@ -89,6 +97,7 @@ const Main = () => {
 		<>
 			<Header />
 			<SearchBar onChange={onQueryChange} />
+			<CustomRadio onChange={onGenderChange} />
 			<CharacterList
 				characters={characters}
 				onBottomReached={onBottomReached}
