@@ -9,7 +9,7 @@ import { charactersQueryKey } from '../constatnts/common';
 import CustomSpinner from './CustomSpinner';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { finish, start } from '../reducers/loadingReducer';
-import SearchForm from './SearchBar';
+import SearchBar from './SearchBar';
 import CustomModal from './CustomModal';
 import { ApiError } from '../enums/error';
 import { debounce } from '../utils/common';
@@ -87,7 +87,7 @@ const Main = () => {
 	return (
 		<>
 			<Header />
-			<SearchForm onChange={onQueryChange} />
+			<SearchBar onChange={onQueryChange} />
 			<CharacterList
 				characters={characters}
 				onBottomReached={onBottomReached}
