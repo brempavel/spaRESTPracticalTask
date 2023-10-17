@@ -56,7 +56,7 @@ const Main = () => {
 			]);
 			setPages(data.info.pages);
 			setCharactersCount(data.info.count);
-			if (query && page === 1) {
+			if ((query && page === 1) || (gender && page === 1)) {
 				onSearchResultModalOpen?.();
 			}
 			dispatch(finish());
