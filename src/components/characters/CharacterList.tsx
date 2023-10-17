@@ -38,7 +38,6 @@ const CharacterList = ({ characters, onBottomReached }: CharacterListProps) => {
 
 	useEffect(() => {
 		const { scrollHeight, clientHeight } = document.documentElement;
-		console.log(scrollHeight, clientHeight);
 		if (scrollHeight === clientHeight) {
 			onBottomReached();
 		}
