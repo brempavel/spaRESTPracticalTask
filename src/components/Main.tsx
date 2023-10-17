@@ -22,7 +22,7 @@ const Main = () => {
 	const [query, setQuery] = useState<string>('');
 	const [characters, setCharacters] = useState<ApiCharacterValues[]>([]);
 	const [charactersCount, setCharactersCount] = useState<number>(0);
-	const [error, setError] = useState<ApiError>();
+	const [error, setError] = useState<ApiError | null>(null);
 	const [onSearchResultModalOpen, setOnSearchResultModalOpen] =
 		useState<() => void>();
 
@@ -32,6 +32,7 @@ const Main = () => {
 		refetchOnWindowFocus: false,
 		retry: false,
 		onSuccess: (data) => {
+			setError(null);
 			if (data.error) {
 				switch (data.error) {
 					case ApiError.NotFound:
