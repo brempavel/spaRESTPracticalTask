@@ -27,7 +27,7 @@ const CustomModal = ({ charactersCount, setOnOpen }: CustomModalProps) => {
 		<Modal isOpen={isOpen} onClose={onClose}>
 			<ModalOverlay />
 			<ModalContent>
-				<ModalHeader>Modal Title</ModalHeader>
+				<ModalHeader>Summary</ModalHeader>
 				<ModalCloseButton />
 				<ModalBody>We found {charactersCount} characters from you</ModalBody>
 
