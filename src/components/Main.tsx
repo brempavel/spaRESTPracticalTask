@@ -13,6 +13,7 @@ import SearchBar from './SearchBar';
 import CustomModal from './CustomModal';
 import CustomRadio from './CustomRadio';
 import { ApiError } from '../enums/error';
+import ErrorMessage from './ErrorMessage';
 import { debounce } from '../utils/common';
 
 const Main = () => {
@@ -110,7 +111,9 @@ const Main = () => {
 				/>,
 				document.body
 			)}
-			{error === ApiError.NotFound && 'Nothing found'}
+			{error === ApiError.NotFound && (
+				<ErrorMessage message="Nothing found..." />
+			)}
 		</>
 	);
 };
