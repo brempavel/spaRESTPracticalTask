@@ -1,10 +1,10 @@
 import { Stack, RadioGroup, Radio, Center } from '@chakra-ui/react';
 
-interface CustomCheckboxProps {
+interface CustomRadioProps {
 	onChange: (gender: string) => void;
 }
 
-const CustomCheckbox = ({ onChange }: CustomCheckboxProps) => {
+const CustomRadio = ({ onChange }: CustomRadioProps) => {
 	return (
 		<>
 			<Center>
@@ -35,4 +35,4 @@ const CustomCheckbox = ({ onChange }: CustomCheckboxProps) => {
 	);
 };
 
-export default CustomCheckbox;
+export default CustomRadio;
